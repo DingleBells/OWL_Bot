@@ -3,14 +3,11 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import json
+from prettytable import PrettyTable
 from keep_alive import keep_alive
-
-pagehtml = requests.get("https://shock.overwatchleague.com/en-us/roster").text
-soup = BeautifulSoup(pagehtml, 'html.parser')
-things = soup.find("script", {"id": "__NEXT_DATA__"})
-print(things)
-data = json.loads(list(things)[0])
-
+from schedule import*
+from roster import*
+from replit import db
 
 client = discord.Client()
 
@@ -27,8 +24,11 @@ async def on_message(message):
     if(message.content.startswith("-hello")):
       await message.channel.send('Hello!')
     
-    if(message.content.startswith('-roster shock')):
-      await message.channel.send('SF shock roster')
+    elif(message.content.startswith('-roster shock')):
+      await message.channel.send(getShockRoster("shock"))
+    
+    elif (message.content.startswith("-owl schedule")):
+      await message.channel.send(embed=embedSchedule())
 
 keep_alive()
 my_secret = os.environ['token']
