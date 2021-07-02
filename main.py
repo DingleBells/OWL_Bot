@@ -1,6 +1,6 @@
 import discord
 import os
-# from keep_alive import keep_alive
+from keep_alive import keep_alive
 from schedule import *
 from getRoster import *
 from helpfunction import *
@@ -66,6 +66,6 @@ async def on_message(message):
 
 
 
-# keep_alive()
-my_secret = 'ODU5OTEzNjU4NjM2OTU5NzQ1.YNznAA.hxRfElkJ9At0FTkH7W9kjK2T97A'
+keep_alive()
+my_secret = os.environ['token']
 client.run(my_secret)
