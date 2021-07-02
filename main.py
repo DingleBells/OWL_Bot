@@ -2,7 +2,7 @@ import discord
 import os
 from keep_alive import keep_alive
 from schedule import*
-from displayRoster import *
+from getRoster import *
 from helpfunction import*;
 from getStandings import *;
 
