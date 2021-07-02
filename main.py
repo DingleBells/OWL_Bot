@@ -21,7 +21,13 @@ async def on_message(message):
     msg = message.content
 
     if msg.startswith("-help"):
-        await message.channel.send(embed=getHelp())
+        if msg == '-help':
+            await message.channel.send(embed=getHelp())
+        elif msg == '-help general':
+            await message.channel.send(embed=getGeneralHelp())
+        elif msg == '-help owl':
+            await message.channel.send(embed=getOWLHelp())
+
 
     elif msg.startswith("-"):
         if msg.startswith("-settings"):
