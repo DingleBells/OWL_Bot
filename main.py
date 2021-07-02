@@ -2,9 +2,8 @@ import discord
 import os
 from keep_alive import keep_alive
 from schedule import*
-from roster import*
 from displayRoster import *
-from help import *;
+from helpfunction import*;
 from getStandings import *;
 
 client = discord.Client()
