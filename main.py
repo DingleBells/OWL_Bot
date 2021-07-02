@@ -1,13 +1,11 @@
 import discord
 import os
-import requests
-from bs4 import BeautifulSoup
-import json
-from prettytable import PrettyTable
 from keep_alive import keep_alive
 from schedule import*
 from roster import*
-from replit import db
+from displayRoster import *
+from help import *;
+from getStandings import *;
 
 client = discord.Client()
 
@@ -19,15 +17,25 @@ async def on_ready():
 async def on_message(message):
   if message.author == client.user:
     return
-  
-  if(message.content.startswith("-")):
-    if(message.content.startswith("-hello")):
-      await message.channel.send('Hello!')
+  msg = message.content
+  if(msg.startswith("-")):
     
-    elif(message.content.startswith('-roster shock')):
-      await message.channel.send(getShockRoster("shock"))
+    if(msg.startswith("-roster")): 
+      team = (msg.split("-roster ")[1]).lower()
+      await message.channel.send(findTeam(team))
     
-    elif (message.content.startswith("-owl schedule")):
+    elif msg.startswith("-owl standings"):
+      response = message.content.split()[2]
+      west, east, tourney = owlSchedule(response)
+      print(len(west), len(east))
+      await message.channel.send(tourney)
+      await message.channel.send(west)
+      await message.channel.send(east)
+
+    elif msg.startswith("-help"):
+      await message.channel.send(embed = getHelp())
+
+    elif (msg.startswith("-owl schedule")):
       await message.channel.send(embed=embedSchedule())
 
 keep_alive()
