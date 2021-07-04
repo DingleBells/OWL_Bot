@@ -19,7 +19,7 @@ def formatDate(month, day, hour, minute):
     return f"{month}/{day} @ {hour}:{minute} {thing}"
 
 def getScores():
-    pagehtml = requests.get("https://overwatchleague.com/en-us/schedule?stage=regular_season&week=12").text
+    pagehtml = requests.get("https://overwatchleague.com/en-us/schedule").text
     soup = BeautifulSoup(pagehtml, 'html.parser')
     things = soup.find("script", {"id": "__NEXT_DATA__"})
     data = json.loads(list(things)[0])
