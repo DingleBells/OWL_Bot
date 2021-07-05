@@ -5,6 +5,11 @@ from schedule import *
 from getRoster import *
 from helpfunction import *
 from getStandings import *
+from schedule import*
+from getRoster import *
+from helpfunction import*;
+from getStandings import *;
+
 
 client = discord.Client()
 

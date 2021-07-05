@@ -7,9 +7,10 @@ import json
 
 
 def formatDate(month, day, hour, minute):
-
     if minute == 0:
         minute = "00"
+    elif minute <=10:
+        minute = f"0{minute}"
     if hour >= 12:
         if hour != 12:
             hour %= 12
