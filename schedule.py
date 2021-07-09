@@ -5,6 +5,11 @@ from prettytable import PrettyTable
 import time
 import json
 
+def strike(text):
+    result = ''
+    for c in text:
+        result = result + c + '\u0336'
+    return result
 
 def formatDate(month, day, hour, minute):
     if minute == 0:
@@ -36,16 +41,10 @@ def getWeekSchedule():
             c2 += " (Encore)"
             matchtime = time.gmtime(match['encoreDate'] / 1000)
             competitors = (c1, c2)
-
-        weekschedule.append((competitors, formatDate(matchtime.tm_mon, matchtime.tm_mday, matchtime.tm_hour - 7, matchtime.tm_min),))
+        weekschedule.append(
+            (competitors, formatDate(matchtime.tm_mon, matchtime.tm_mday, matchtime.tm_hour - 7, matchtime.tm_min)
+             , match['status'] == "CONCLUDED"))
     return weekschedule
-
-def formatSchedule(schedule):
-    table = PrettyTable(["Time", "Matchup"])
-    for ((team1, team2), mytime) in schedule:
-        # print(team1, team2, mytime)
-        table.add_row([mytime, f"{team1} vs. {team2}"])
-    return table
 
 
 def embedSchedule():
@@ -56,6 +55,9 @@ def embedSchedule():
     )
 
     games = getWeekSchedule()
-    for ((team1, team2), mytime) in games:
-        commands.add_field(name=mytime, value=f"{team1} vs. {team2}")
+    for ((team1, team2), mytime, strikethrough) in games:
+        if strikethrough:
+            commands.add_field(name=f"~~{mytime}~~", value=f"~~{team1} vs. {team2}~~")
+        else:
+            commands.add_field(name=mytime, value=f"{team1} vs. {team2}")
     return commands
