@@ -21,7 +21,7 @@ def formatDate(month, day, hour, minute):
 
 
 def getWeekSchedule():
-    pagehtml = requests.get("https://overwatchleague.com/en-us/schedule?stage=regular_season&week=12").text
+    pagehtml = requests.get("https://overwatchleague.com/en-us/schedule").text
     soup = BeautifulSoup(pagehtml, 'html.parser')
     things = soup.find("script", {"id": "__NEXT_DATA__"})
     data = json.loads(list(things)[0])
@@ -31,9 +31,13 @@ def getWeekSchedule():
     for match in data['props']['pageProps']['blocks'][2]['schedule']['tableData']['events'][0]['matches']:
         competitors = (match['competitors'][0]['name'], match['competitors'][1]['name'])
         matchtime = time.gmtime(match['startDate'] / 1000)
-        # print(matchtime)
-        # print(competitors, matchtime.tm_mon, matchtime.tm_mday, matchtime.tm_hour - 7, matchtime.tm_min)
-        weekschedule.append((competitors, formatDate(matchtime.tm_mon, matchtime.tm_mday, matchtime.tm_hour - 7, matchtime.tm_min)))
+        if match['isEncore'] == True:
+            c1, c2 = competitors
+            c2 += " (Encore)"
+            matchtime = time.gmtime(match['encoreDate'] / 1000)
+            competitors = (c1, c2)
+
+        weekschedule.append((competitors, formatDate(matchtime.tm_mon, matchtime.tm_mday, matchtime.tm_hour - 7, matchtime.tm_min),))
     return weekschedule
 
 def formatSchedule(schedule):
