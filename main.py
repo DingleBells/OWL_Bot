@@ -1,15 +1,11 @@
 import discord
 import os
 from keep_alive import keep_alive
-from schedule import *
+from schedule import embedSchedule
 from getRoster import *
 from helpfunction import *
-from getStandings import *
-from schedule import*
-from getRoster import *
-from helpfunction import*;
-from getStandings import *;
-
+from scrollReaction import handleReaction
+from webscraper import getStandingsEmbed
 
 client = discord.Client()
 
@@ -20,9 +16,25 @@ async def on_ready():
 
 
 @client.event
+async def on_reaction_add(reaction, user):
+    if reaction.message.author == client.user:
+        if user != client.user:
+            # print("{} has reacted to a message.")
+            thing = handleReaction(reaction)
+            # print("thing", thing)
+            if thing is not None:
+                await reaction.message.remove_reaction(reaction, user)
+                await reaction.message.edit(embed=thing)
+
+@client.event
 async def on_message(message):
     if message.author == client.user:
-        return
+        if "Standings" in message.embeds[0].title:
+            # print("added reactions")
+            await message.add_reaction(emoji="⬅")
+            await message.add_reaction(emoji="➡")
+        else:
+            return
     msg = message.content
 
     if msg.startswith("-help"):
@@ -58,16 +70,14 @@ async def on_message(message):
 
                     if restofmsg.startswith('roster'):
                         team = (restofmsg.split("roster ")[1]).lower()
-                        print(team)
+                        # print(team)
                         await message.channel.send(findTeam(team))
 
-                    elif restofmsg.startswith("standings"):
-                        response = restofmsg.split()[1]
-                        west, east, tourney = owlSchedule(response)
-                        print(len(west), len(east))
-                        await message.channel.send(tourney)
-                        await message.channel.send(west)
-                        await message.channel.send(east)
+
+                    elif restofmsg == "standings":
+                        standingsEmbed = getStandingsEmbed(0)
+                        # print(len(standingsEmbed))
+                        await message.channel.send(embed=standingsEmbed)
 
                     elif restofmsg == 'schedule':
                         await message.channel.send(embed=embedSchedule())
