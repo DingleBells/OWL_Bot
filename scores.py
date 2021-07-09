@@ -46,7 +46,7 @@ def getScoreEmbed():
     embed = discord.Embed(
         title="Overwatch League Scores from this Week",
         description="Completed/In Progress Overwatch League Matches!\n For more details, click on the score.",
-        color=discord.Colour.blue()
+        color=discord.Colour.gold()
     )
     data = getScores()
     for (m1, m2, [s1, s2], date, link) in data:
