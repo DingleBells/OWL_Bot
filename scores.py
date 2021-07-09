@@ -44,10 +44,10 @@ def getScores():
 
 def getScoreEmbed():
     embed = discord.Embed(
+        title="Overwatch League Scores from this Week",
         description="Completed/In Progress Overwatch League Matches!\n For more details, click on the score.",
         color=discord.Colour.blue()
     )
-    embed.set_author(name="OWL Scores", icon_url="https://upload.wikimedia.org/wikipedia/en/thumb/7/74/Overwatch_League_logo.svg/1200px-Overwatch_League_logo.svg.png")
     data = getScores()
     for (m1, m2, [s1, s2], date, link) in data:
         embed.add_field(name=date,value=f"[{m1} {s1} - {s2} {m2}]({link})", inline=True)

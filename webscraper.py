@@ -59,10 +59,13 @@ def getStandings(tourney):
 
 def makeStandingsEmbed(west, east, title):
     standings = discord.Embed(
-        title=title + " Standings"
+        title=title + " Standings",
+        color=discord.Color.gold()
     )
+    standings.set_footer(text="Tip: Use the reaction arrows to scroll through the standings!")
     standings.add_field(name='West Region Standings', value="```" + str(west) + "```", inline=True)
-    standings.add_field(name='East Region Standings', value='```' + str(east) + "```", inline=False)
+    standings.add_field(name='East Region Standings', value='```' + str(east) + "```\nThe '-' indicates the knockout cutoff"
+    , inline=False)
     return standings
 
 

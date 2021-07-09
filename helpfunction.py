@@ -3,7 +3,7 @@ import discord
 
 def getHelp():
     helpScreen = discord.Embed(
-        title="All commands",
+        title="All commands for bot",
         description="List of all commands and functions",
         color=discord.Colour.gold()
     )

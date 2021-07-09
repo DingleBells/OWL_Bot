@@ -6,6 +6,8 @@ from getRoster import *
 from helpfunction import *
 from scrollReaction import handleReaction
 from webscraper import getStandingsEmbed
+from scores import getScoreEmbed
+
 
 client = discord.Client()
 
@@ -29,12 +31,13 @@ async def on_reaction_add(reaction, user):
 @client.event
 async def on_message(message):
     if message.author == client.user:
-        if "Standings" in message.embeds[0].title:
-            # print("added reactions")
-            await message.add_reaction(emoji="⬅")
-            await message.add_reaction(emoji="➡")
-        else:
-            return
+        if len(message.embeds) > 0:
+            if "Standings" in message.embeds[0].title:
+                # print("added reactions")
+                await message.add_reaction(emoji="⬅")
+                await message.add_reaction(emoji="➡")
+            else:
+                return
     msg = message.content
 
     if msg.startswith("-help"):
@@ -81,8 +84,9 @@ async def on_message(message):
 
                     elif restofmsg == 'schedule':
                         await message.channel.send(embed=embedSchedule())
-
-
+                    
+                    elif restofmsg == 'scores':
+                        await message.channel.send(embed=getScoreEmbed())
 
 
 
