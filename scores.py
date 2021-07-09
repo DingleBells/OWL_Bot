@@ -49,7 +49,11 @@ def getScoreEmbed():
         color=discord.Colour.gold()
     )
     data = getScores()
+    counter = 0
     for (m1, m2, [s1, s2], date, link) in data:
+        counter += 1
         embed.add_field(name=date,value=f"[{m1} {s1} - {s2} {m2}]({link})", inline=True)
+    if counter % 3 == 2:
+      embed.add_field(name='\u200b', value='\u200b')
     return embed
 
