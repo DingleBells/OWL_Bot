@@ -2,7 +2,7 @@ import discord
 import os
 from keep_alive import keep_alive
 from schedule import embedSchedule
-from getRoster import *
+from getRoster import getRosterEmbed
 from helpfunction import *
 from scrollReaction import handleReaction
 from webscraper import getStandingsEmbed
@@ -73,8 +73,7 @@ async def on_message(message):
 
                     if restofmsg.startswith('roster'):
                         team = (restofmsg.split("roster ")[1]).lower()
-                        # print(team)
-                        await message.channel.send(findTeam(team))
+                        await message.channel.send(getRosterEmbed(team))
 
 
                     elif restofmsg == "standings":
