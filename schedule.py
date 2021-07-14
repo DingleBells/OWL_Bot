@@ -2,8 +2,6 @@ import datetime
 import requests
 import discord
 from bs4 import BeautifulSoup
-from prettytable import PrettyTable
-import time
 import json
 
 def convertUTCToPST(intime):
