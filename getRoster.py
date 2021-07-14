@@ -1,3 +1,4 @@
+import datetime
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -45,7 +46,8 @@ def getRosterEmbed(teamname):
 
     embed = discord.Embed(
         title=f"{formatName(name).title()} Roster",
-        description=f"{tanks} Tanks, {dps} DPS, {supports} Supports"
+        description=f"{tanks} Tanks, {dps} DPS, {supports} Supports",
+        timestamp=datetime.datetime.utcnow()
     )
     embed.add_field(name="Role", value=rolestring)
     embed.add_field(name='Player', value=namestuff)

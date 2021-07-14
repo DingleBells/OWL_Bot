@@ -1,3 +1,4 @@
+import datetime
 import requests
 from bs4 import BeautifulSoup
 import discord
@@ -46,7 +47,8 @@ def getScoreEmbed():
     embed = discord.Embed(
         title="Overwatch League Scores from this Week",
         description="Completed/In Progress Overwatch League Matches!\n For more details, click on the score.",
-        color=discord.Colour.gold()
+        color=discord.Colour.gold(),
+        timestamp=datetime.datetime.utcnow()
     )
     data = getScores()
     counter = 0

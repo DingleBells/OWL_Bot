@@ -1,3 +1,4 @@
+import datetime
 import requests
 import discord
 from bs4 import BeautifulSoup
@@ -51,7 +52,8 @@ def embedSchedule():
     commands = discord.Embed(
         title="OWL Schedule",
         description="The Overwatch League's Schedule for this Week!",
-        color=discord.Colour.gold()
+        color=discord.Colour.gold(),
+        timestamp=datetime.datetime.utcnow()
     )
 
     games = getWeekSchedule()

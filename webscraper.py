@@ -1,3 +1,4 @@
+import datetime
 from urllib.request import urlopen as uReq
 import discord
 from bs4 import BeautifulSoup as soup
@@ -60,7 +61,8 @@ def getStandings(tourney):
 def makeStandingsEmbed(west, east, title):
     standings = discord.Embed(
         title=title + " Standings",
-        color=discord.Color.gold()
+        color=discord.Color.gold(),
+        timestamp=datetime.datetime.utcnow()
     )
     standings.set_footer(text="Tip: Use the reaction arrows to scroll through the standings!")
     standings.add_field(name='West Region Standings', value="```" + str(west) + "```", inline=True)
