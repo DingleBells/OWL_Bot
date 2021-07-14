@@ -6,25 +6,53 @@ from prettytable import PrettyTable
 import time
 import json
 
-def strike(text):
-    result = ''
-    for c in text:
-        result = result + c + '\u0336'
-    return result
+def convertUTCToPST(intime):
+    # pst is 7 hours behind UTC
+    intime = intime.split()
 
-def formatDate(month, day, hour, minute):
-    if minute == 0:
-        minute = "00"
-    elif minute <=10:
-        minute = f"0{minute}"
+    monthdate = intime[0].split('-')
+    month = int(monthdate[1])
+    date = int(monthdate[2])
+
+    hourmin = intime[1].split(':')
+    hour = int(hourmin[0])
+    min = int(hourmin[1])
+
+    if hour >= 7:
+        hour -= 7
+    else:
+        hour = 24 + hour-7
+        if date == 1:
+            if month == 1:
+                month = 12
+            else:
+                month -= 1
+            if month in [1, 3, 5, 7, 8, 10, 12]:
+                date = 31
+            elif month == 2:
+                date = 28
+            else:
+                date = 30
+        else:
+            date -= 1
+
+    if min == 0:
+        min = "00"
+    elif min <= 10:
+        min = f"0{min}"
     if hour >= 12:
         if hour != 12:
             hour %= 12
         thing = "PM"
     else:
         thing = "AM"
-    return f"{month}/{day} @ {hour}:{minute} {thing}"
+    return f"{month}/{date} @ {hour}:{min} {thing}"
 
+def strike(text):
+    result = ''
+    for c in text:
+        result = result + c + '\u0336'
+    return result
 
 def getWeekSchedule():
     pagehtml = requests.get("https://overwatchleague.com/en-us/schedule").text
@@ -34,15 +62,13 @@ def getWeekSchedule():
     weekschedule = []
     for match in data['props']['pageProps']['blocks'][2]['schedule']['tableData']['events'][0]['matches']:
         competitors = (match['competitors'][0]['name'], match['competitors'][1]['name'])
-        matchtime = time.localtime(match['startDate'] / 1000)
+        matchtime = datetime.datetime.utcfromtimestamp(match['startDate'] / 1000)
         if match['isEncore'] == True:
             c1, c2 = competitors
             c2 += " (Encore)"
-            matchtime = time.localtime(match['encoreDate'] / 1000)
+            matchtime = datetime.datetime.utcfromtimestamp(match['encoreDate'] / 1000)
             competitors = (c1, c2)
-        weekschedule.append(
-            (competitors, formatDate(matchtime.tm_mon, matchtime.tm_mday, matchtime.tm_hour, matchtime.tm_min)
-             , match['status'] == "CONCLUDED"))
+        weekschedule.append((competitors, convertUTCToPST(str(matchtime)), match['status'] == "CONCLUDED"))
     return weekschedule
 
 
@@ -60,4 +86,5 @@ def embedSchedule():
             commands.add_field(name=f"~~{mytime}~~", value=f"~~{team1} vs. {team2}~~")
         else:
             commands.add_field(name=mytime, value=f"{team1} vs. {team2}")
+    commands.set_footer(text='Note: All times are in PST')
     return commands
