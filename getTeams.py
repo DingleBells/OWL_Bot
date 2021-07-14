@@ -1,3 +1,4 @@
+import datetime
 import discord
 
 def getTeams(reign, uprising, hunters, fuel, mayhem, gladiators, charge, outlaws, spark,
@@ -26,6 +27,7 @@ justice) :
         "**"+valiant+"VAL-Los Angeles Valiant**\n"+
         "**"+titans+"VAN-Vancouver Titans**\n"+
         "**"+justice+"WAS-Washington Justice**",
-        color=discord.Colour.gold()
+        color=discord.Colour.gold(),
+        timestamp=datetime.datetime.utcnow()
     )
     return teamList
