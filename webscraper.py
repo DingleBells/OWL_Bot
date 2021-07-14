@@ -7,7 +7,7 @@ import json
 
 
 def displayStandings(stuff):
-    westTable = PrettyTable([f"Rank", "Team", "Pts", "W", "L", "Map W-L-T", "Diff"])
+    westTable = PrettyTable([f"Rk", "Team", "Pts", "W", "L", "W-L-T", "Diff"])
     tables = stuff['tables']
     west = tables[0]
     teams = west['teams']
@@ -21,7 +21,7 @@ def displayStandings(stuff):
         else:
             westTable.add_row([filler, filler, filler, filler, filler, filler, filler])
         rank += 1
-    eastTable = PrettyTable([f"Rank", "Team", "Pts", "W", "L", "Map W-L-T", "Diff"])
+    eastTable = PrettyTable([f"Rk", "Team", "Pts", "W", "L", "W-L-T", "Diff"])
     east = tables[1]
     teams = east['teams']
     rank = 1

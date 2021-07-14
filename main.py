@@ -8,7 +8,7 @@ from helpfunction import *
 from scrollReaction import handleReaction
 from webscraper import getStandingsEmbed
 from scores import getScoreEmbed
-from getTeams import *
+from getTeams import getTeams
 
 
 client = discord.Client()
@@ -91,7 +91,7 @@ async def on_message(message):
               valiant = "<:valiant:864275597630504970>"
               titans = "<:titans:864275573999927326>"
               justice = "<:justice:864275469510508574>"
-              await message.channel.send(embed = getTeams(reign, uprising, hunters, fuel, mayhem, gladiators, charge, outlaws, spark,
+              await message.channel.send(embed=getTeams(reign, uprising, hunters, fuel, mayhem, gladiators, charge, outlaws, spark,
               spitfire, excelsior, eternal, fusion, dynasty, shock, dragons, defiant, valiant, titans, justice))
 
             else:
@@ -100,7 +100,7 @@ async def on_message(message):
 
                     if restofmsg.startswith('roster'):
                         team = (restofmsg.split("roster ")[1]).lower()
-                        await message.channel.send(getRosterEmbed(team))
+                        await message.channel.send(embed=getRosterEmbed(team))
 
 
                     elif restofmsg == "standings":

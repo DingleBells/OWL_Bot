@@ -31,19 +31,17 @@ def getWeekSchedule():
     soup = BeautifulSoup(pagehtml, 'html.parser')
     things = soup.find("script", {"id": "__NEXT_DATA__"})
     data = json.loads(list(things)[0])
-
     weekschedule = []
-
     for match in data['props']['pageProps']['blocks'][2]['schedule']['tableData']['events'][0]['matches']:
         competitors = (match['competitors'][0]['name'], match['competitors'][1]['name'])
-        matchtime = time.gmtime(match['startDate'] / 1000)
+        matchtime = time.localtime(match['startDate'] / 1000)
         if match['isEncore'] == True:
             c1, c2 = competitors
             c2 += " (Encore)"
-            matchtime = time.gmtime(match['encoreDate'] / 1000)
+            matchtime = time.localtime(match['encoreDate'] / 1000)
             competitors = (c1, c2)
         weekschedule.append(
-            (competitors, formatDate(matchtime.tm_mon, matchtime.tm_mday, matchtime.tm_hour - 7, matchtime.tm_min)
+            (competitors, formatDate(matchtime.tm_mon, matchtime.tm_mday, matchtime.tm_hour, matchtime.tm_min)
              , match['status'] == "CONCLUDED"))
     return weekschedule
 
