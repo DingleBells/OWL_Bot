@@ -40,7 +40,7 @@ def getStandings(tourney):
     tourneyDict = {0: '2021 Regular Season', 1: "May Melee Qualifiers", 2: 'June Joust: Qualifiers'
         , 3: 'Summer Showdown: Qualifiers', 4: 'Countdown Cup: Qualifiers'}
     # get the raw html data
-    my_url = 'https://overwatchleague.com/en-us/standings/2021/summer-showdown-qualifiers'
+    my_url = 'https://overwatchleague.com/en-us/standings'
     uClient = uReq(my_url)
     page_html = uClient.read()
     uClient.close()
