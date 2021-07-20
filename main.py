@@ -1,14 +1,13 @@
 import discord
-from discord.utils import get
 import os
 from keep_alive import keep_alive
-from schedule import embedSchedule
 from getRoster import getRosterEmbed
 from helpfunction import *
-from scrollReaction import handleReaction
+from scrollReaction import handleStandingsReaction
+from scrollReaction import handleScheduleReaction
 from webscraper import getStandingsEmbed
-from scores import getScoreEmbed
 from getTeams import getTeams
+from scheduleAndScores import handleMatchDates
 
 
 client = discord.Client()
@@ -24,17 +23,24 @@ async def on_reaction_add(reaction, user):
     if reaction.message.author == client.user:
         if user != client.user:
             # print("{} has reacted to a message.")
-            thing = handleReaction(reaction)
-            # print("thing", thing)
-            if thing is not None:
-                await reaction.message.remove_reaction(reaction, user)
-                await reaction.message.edit(embed=thing)
+            embedtitle = reaction.message.embeds[0].title
+            if "Standings" in embedtitle:
+                thing = handleStandingsReaction(reaction)
+                # print("thing", thing)
+                if thing is not None:
+                    await reaction.message.remove_reaction(reaction, user)
+                    await reaction.message.edit(embed=thing)
+            elif "Schedule" in embedtitle:
+                thing = handleScheduleReaction(reaction)
+                if thing is not None:
+                    await reaction.message.remove_reaction(reaction, user)
+                    await reaction.message.edit(embed=thing)
 
 @client.event
 async def on_message(message):
     if message.author == client.user:
         if len(message.embeds) > 0:
-            if "Standings" in message.embeds[0].title:
+            if "Standings" in message.embeds[0].title or "Schedule" in message.embeds[0].title:
                 # print("added reactions")
                 await message.add_reaction(emoji="⬅")
                 await message.add_reaction(emoji="➡")
@@ -109,10 +115,7 @@ async def on_message(message):
                         await message.channel.send(embed=standingsEmbed)
 
                     elif restofmsg == 'schedule':
-                        await message.channel.send(embed=embedSchedule())
-                    
-                    elif restofmsg == 'scores':
-                        await message.channel.send(embed=getScoreEmbed())
+                        await message.channel.send(embed=handleMatchDates(16))
 
 
 
