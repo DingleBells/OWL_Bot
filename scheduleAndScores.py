@@ -12,12 +12,14 @@ def getSchedule(week):
 
     print('driver.get is completed')
     schedules = driver.find_element_by_xpath("/html/body/div[1]/div/div/div[3]/div[3]")
-    fout = open("HTMLInHere.txt", 'w')
-    fout.write(schedules.text)
 
+    print(schedules.text)
     schedulelist = schedules.text.split("\n")
 
-    matchlist = [schedulelist[20].title()]
+    for i in range(len(schedulelist)):
+        if schedulelist[i].startswith("All matches"):
+            matchlist = [schedulelist[i-1].title()]
+
     start = 25
 
     for i in range(25, len(schedulelist)):
@@ -35,7 +37,7 @@ def getSchedule(week):
 def handleMatchDates(response):
     inlist = getSchedule(response)
     embed = discord.Embed(
-        title="Overwatch League" + inlist[0] + " Schedule",
+        title="Overwatch League " + inlist[0] + " Schedule",
         color=discord.Colour.gold(),
         timestamp=datetime.datetime.utcnow()
     )
